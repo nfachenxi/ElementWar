@@ -1,0 +1,78 @@
+# ============================================================
+# Unity 项目 .gitignore（标准参考版）
+# ============================================================
+
+# --- Unity 引擎生成的本地缓存目录（绝对不应入库）---
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# --- Unity 崩溃报告 / 分析 ---
+Crashlytics/
+EditorUserBuildSettings.asset
+ExportedObj/
+*.pidb
+*.pdb
+*.mdb
+*.apk
+*.aab
+*.unitypackage
+*.booproj
+*.svd
+*.unityproj
+*.log
+*.stackdump
+MemoryCaptures/
+
+# --- Visual Studio 相关 ---
+.vs/
+.vsconfig
+*.csproj
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+# --- JetBrains Rider ---
+.idea/
+*.sln.iml
+
+# --- VS Code ---
+.vscode/
+*.code-workspace
+
+# --- 操作系统杂项 ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+*.swp
+*~
+*.orig
+
+# --- Unity Asset Store 工具缓存 ---
+AssetStoreTools/
+
+# --- 大型插件/资源包（本地保留，不同步至仓库）---
+Assets/MMD4Mecanim/
+Assets/Low Poly FPS Pack/
+/Assets/MMD4Mecanim.meta
+/Assets/Low Poly FPS Pack.meta
