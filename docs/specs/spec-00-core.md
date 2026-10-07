@@ -39,7 +39,7 @@ phase: any
 
 ### 3. 第三方资产只读
 
-`Assets/Low Poly FPS Pack/`（296.2 MB）、`Assets/MMD4Mecanim/`（448.6 MB）、`Assets/Plugins/`（37.7 MB，含 EffectCore、YSA Toon、Roslyn）一律不修改其源码与资源。需要定制时，把资源复制到工程自己的目录再改。
+`Assets/Low Poly FPS Pack/`（296.2 MB）、`Assets/MMD4Mecanim/`（448.6 MB）、`Assets/ThirdParty/`（208.4 MB，第三方美术资产归口，含 `EffectCore`、`YSA Toon`）、`Assets/Plugins/Roslyn/`（12.2 MB，代码依赖）一律不修改其源码与资源。需要定制时，把资源复制到工程自己的目录再改。
 
 ### 4. 生成文件不手改
 

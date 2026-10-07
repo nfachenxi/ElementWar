@@ -15,6 +15,7 @@ phase: any
 | 源码根 | `Assets/Scripts/` |
 | 场景 | `Assets/Scenes/TestScene.unity`（当前唯一项目场景） |
 | 管线资产 | `Assets/Settings/`（URP-Balanced / URP-HighFidelity 及 Renderer） |
+| 第三方资源 | `Assets/ThirdParty/`（208.4 MB，只读，见 spec-03）；`Assets/Resources/` 已于 2026-10-06 移除 |
 
 ## 目录职责
 
@@ -28,10 +29,11 @@ phase: any
 | `Assets/Scripts/Enemy/State/` | 敌人状态：`ZombieIdleState`、`ZombieMoveState`、`ZombieAttackState`、`ZombieDeadState` |
 | `Assets/Scripts/Crosshair/` | 准星域：`CrosshairSettings`（ScriptableObject）、`CrosshairUI` |
 | `Assets/Scenes/` | 项目场景，新增场景放这里 |
-| `Assets/Settings/` | URP 管线资产、Input System（含生成物）、Volume Profile |
-| `Assets/Resources/` | 运行时按名加载的资源（182.8 MB，见 spec-03） |
-| `Assets/Plugins/` | 第三方插件（只读） |
-| 其余 `Assets/` 顶层目录 | 第三方资产包（只读） |
+| `Assets/Settings/` | URP 管线资产、Input System（含生成物）、Volume Profile、`CrosshairSettings.asset` |
+| `Assets/ThirdParty/` | 第三方美术资产归口（只读，208.4 MB）：`Animations`／`EffectCore`／`Effects`／`Materials`／`Models`／`Textures`／`YSA Toon` |
+| `Assets/Plugins/` | 第三方代码插件（只读，12.2 MB，仅 `Roslyn`） |
+| `Assets/Low Poly FPS Pack/`、`Assets/MMD4Mecanim/` | 第三方资产包（只读，不入库） |
+| ~~`Assets/Resources/`~~ | **已于 2026-10-06 移除**（原 182.8 MB 常驻）；不再重建，见 [spec-03](spec-03-assets-scene-prefab.md) |
 
 ## 规则
 
@@ -75,6 +77,7 @@ phase: any
 ## 变更记录
 
 - 2026-10-06：初版。目录与程序集现状据实测量，未新增 asmdef。
+- 2026-10-06：**布局调整**。`Assets/Resources/` 清空删除，`Assets/ThirdParty/` 成为第三方美术资产归口（`Plugins/EffectCore`、`Plugins/YSA Toon` 迁出，`Plugins/` 只留 `Roslyn`）；`CrosshairSettings.asset` 进入 `Assets/Settings/`，其 Inspector 引用随 GUID 保留。`Assets/Scripts/` 域分层未变动。
 
 ## 相关分册
 

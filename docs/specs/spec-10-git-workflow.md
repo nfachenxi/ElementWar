@@ -60,7 +60,7 @@ phase: any
 ### 6. 大文件
 
 - 不提交 > 100 MB 的单文件（GitHub 硬限制）。新增大资产前先确认放置方式。
-- 不把 `Resources/`（当前 182.8 MB）里的内容再复制一份到别处。
+- 不把 `Assets/ThirdParty/`（208.4 MB）与两个不入库资源包（`Low Poly FPS Pack`、`MMD4Mecanim`）的内容再复制一份到别处。
 - 二进制资产改动无法 diff 审阅，因此资产改动必须在提交信息里写清「改了什么、为什么」。
 
 ### 7. 与 AI 协作相关的提交
@@ -70,6 +70,7 @@ phase: any
 ## 变更记录
 
 - 2026-10-06：初版。远端、分支与 .gitignore 策略据实测量；明确不引入 worktree 与子仓库。
+- 2026-10-06：大文件条目随布局调整改写（`Resources/` → `Assets/ThirdParty/`）。
 
 ## 相关分册
 

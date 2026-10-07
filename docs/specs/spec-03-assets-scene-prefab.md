@@ -13,18 +13,20 @@ phase: any
 | --- | --- | --- |
 | `Assets/MMD4Mecanim/` | 448.6 MB | 第三方（只读），已排除入库 |
 | `Assets/Low Poly FPS Pack/` | 296.2 MB | 第三方（只读），已排除入库 |
-| `Assets/Resources/` | 182.8 MB | 运行时加载资源 |
-| `Assets/Plugins/` | 37.7 MB | 第三方插件（只读），已入库 |
+| `Assets/ThirdParty/` | 208.4 MB | 第三方美术资产归口（只读），已入库 |
+| `Assets/Plugins/` | 12.2 MB | 第三方代码插件（只读，仅 `Roslyn`），已入库 |
 
-`Resources` 打包后常驻内存且无法单独卸载，是本工程内存与包体的大头。
+`Assets/Resources/` 已于 **2026-10-06 清空并删除**（原 182.8 MB）。取证依据：全工程 `Resources.Load`／`LoadAsync`／`Unload` 为 **0 次**；该目录下被引用的 79 项资产全部由 `Assets/Scenes/TestScene.unity` 以 Inspector 引用方式使用。经 Unity MCP `AssetDatabase.MoveAsset` 迁移到 `Assets/ThirdParty/` 后，GUID 保留、`TestScene` 对 `Assets/Resources/` 的依赖归零。
 
 ## 规则
 
-### 1. 新增资源默认不进 `Resources`
+### 1. 不重建 `Resources`（该目录已移除）
 
-仅当必须「按名字在运行时加载、且无法用 Inspector 引用或 AssetBundle/Addressables 承载」时才放进 `Assets/Resources/`，并在汇报里说明理由与预估体积。
+本工程已无 `Assets/Resources/`，且当前没有任何 `Resources.Load` 调用。默认**不重建**该目录；新增资源一律走 Inspector 直接引用或 `ScriptableObject` 配置持有。
 
-优先顺序：Inspector 直接引用 → `ScriptableObject` 配置持有 → `Resources` 按名加载。
+若某资源确需「按名字在运行时加载」，先提案说明：为什么 Inspector 引用不可行、预估体积、常驻内存代价，经确认后才建 `Assets/Resources/`，并**只在该目录放这一项**，同时在变更记录里写明理由与体积。
+
+优先顺序：Inspector 直接引用 → `ScriptableObject` 配置持有 → `Resources` 按名加载（需先提案）。
 
 ### 2. 场景
 
@@ -57,11 +59,12 @@ phase: any
 
 ### 8. 新增大型资源前先确认
 
-新增与 `Low Poly FPS Pack` / `MMD4Mecanim` / `Resources` 同量级的资源前，先确认是否必需、能否复用现有素材。
+新增与 `Low Poly FPS Pack` / `MMD4Mecanim` / `Assets/ThirdParty/`（208.4 MB）同量级（≥200 MB）的资源前，先确认是否必需、能否复用现有素材。
 
 ## 变更记录
 
 - 2026-10-06：初版。体量为实测值。
+- 2026-10-06：**布局调整**。`Assets/Resources/` 清空删除，内容与 `Plugins/EffectCore`、`Plugins/YSA Toon` 一并归口到 `Assets/ThirdParty/`（208.4 MB）；规则 1 由「新增资源默认不进 Resources」升级为「不重建 Resources」。移动经 Unity MCP `AssetDatabase.MoveAsset`，符合规则 4。
 
 ## 相关分册
 

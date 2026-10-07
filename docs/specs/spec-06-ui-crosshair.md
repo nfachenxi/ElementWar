@@ -12,7 +12,7 @@ phase: any
 | 项 | 现状 |
 | --- | --- |
 | UI 包 | `com.unity.ugui` 2.0.0（uGUI），未使用 UI Toolkit |
-| 准星配置 | `Crosshair/CrosshairSettings`：`ScriptableObject`，菜单 **`ElementWar/Crosshair Settings`**，`fileName = "CrosshairSettings"` |
+| 准星配置 | `Crosshair/CrosshairSettings`：`ScriptableObject`，资产在 `Assets/Settings/CrosshairSettings.asset`（2026-10-06 由 `Resources/` 迁入），菜单 **`ElementWar/Crosshair Settings`**，`fileName = "CrosshairSettings"` |
 | 准星样式 | `CrosshairStyle` 枚举：`Cross` / `Dot` / `Circle` / `Chevron` |
 | 准星显示 | `Crosshair/CrosshairUI`，静态入口 `CrosshairUI.Instance`，提供 `Show()` / `Hide()` |
 | 调用方 | `PlayerController.EnterAim()` 调 `Show()`，`ExitAim()` 调 `Hide()` |

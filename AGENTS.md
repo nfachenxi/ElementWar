@@ -38,13 +38,13 @@
 
 1. **禁止臆造** — 不确定 Unity／包 API 时先查 `Library/PackageCache/` 里实际安装的包源码；查不到就抛出问题等确认。
 2. **先分析 → 再确认 → 再实施** — 需求不明或影响面大时先出方案；未经确认不批量修改、不整体重构、不扩展范围。
-3. **第三方只读** — `Assets/Low Poly FPS Pack/`、`Assets/MMD4Mecanim/`、`Assets/Plugins/` 不改其源码与资源；需要定制就复制到工程自己的目录再改。
+3. **第三方只读** — `Assets/Low Poly FPS Pack/`、`Assets/MMD4Mecanim/`、`Assets/ThirdParty/`、`Assets/Plugins/Roslyn/` 不改其源码与资源；需要定制就复制到工程自己的目录再改。
 4. **生成文件不手改** — `MyInputSystem.cs` 由 `.inputactions` 生成，改输入只改 `.inputactions`。
 5. **不手写序列化 YAML** — `.unity`／`.prefab`／`.asset`／`ProjectSettings` 一律经 Editor（或 Unity MCP）修改。
 6. **`.meta` 同增同删** — 不留孤儿 meta，不手工改既有 GUID。
 7. **不引入第二套机制** — 状态机用 `Utils/StateMachine`，单例用 `Base/SingleMonoBase<T>`，帧驱动用 `Utils/MonoManager`，玩家入口用 `PlayerController.INSTANCE`。
 8. **不擅自引入架构** — 不新增 asmdef、不引第三方状态机／DI／事件／资源框架（含 UI Toolkit 与 uGUI 混用）。
-9. **Resources 慎用** — `Assets/Resources/` 已 182.8 MB 且打包后常驻；新增资源默认不进 Resources。
+9. **`Resources` 已移除，不重建** — 2026-10-06 已清空并删除 `Assets/Resources/`（原 182.8 MB 常驻，全工程 `Resources.Load` 为 0）；新增资源走 Inspector 引用或 `ScriptableObject` 持有，需按名加载先提案（见 [spec-03](docs/specs/spec-03-assets-scene-prefab.md)）。
 10. **性能结论要举证** — 热点路径改动必须有 Profiler 依据或量化推理，不靠感觉宣称「变快了」。
 11. **最小改动** — 优先局部修改与复用现有结构；不为「更完整」堆抽象层。
 12. **未授权不散写文档** — 不新建说明／设计／总结类 `.md`／`.txt`；治理文档只写 `docs/`，且需授权。
@@ -59,9 +59,9 @@
 | `Assets/Scripts/Enemy/` | 敌人域：`ZombieEnemy`，状态放 `Enemy/State/` |
 | `Assets/Scripts/Crosshair/` | 准星域：`CrosshairSettings`（ScriptableObject）、`CrosshairUI` |
 | `Assets/Scenes/` | 项目场景 |
-| `Assets/Settings/` | URP 管线资产、Input System（含生成物）、Volume Profile |
-| `Assets/Resources/` | 运行时按名加载资源（182.8 MB，慎增） |
-| `Assets/Plugins/` | 第三方插件（只读，37.7 MB） |
+| `Assets/Settings/` | URP 管线资产、Input System（含生成物）、Volume Profile、`CrosshairSettings.asset` |
+| `Assets/ThirdParty/` | 第三方美术资产归口（只读，208.4 MB）：`Animations`／`EffectCore`／`Effects`／`Materials`／`Models`／`Textures`／`YSA Toon` |
+| `Assets/Plugins/` | 第三方代码插件（只读，12.2 MB，仅 `Roslyn`） |
 | `Assets/Low Poly FPS Pack/` | 第三方资产（只读，296.2 MB，不入库） |
 | `Assets/MMD4Mecanim/` | 第三方资产（只读，448.6 MB，不入库） |
 | `docs/specs/` | 规范正文 |
@@ -74,7 +74,7 @@
 - **玩家入口**：`PlayerController.INSTANCE`（状态基类已按此取用）。
 - **输入**：`Assets/Settings/InputSystem/MyInputSystem`（生成类）+ `MyInputSystem.inputactions`。现有 `Player`map：`Move` / `Look` / `Fire` / `IsSprint` / `IsAiming` / `IsJumping`。输入统一在 `PlayerController.Update` 采样成字段，状态类只读字段。
 - **相机**：Cinemachine 已接入 `PlayerController`（`freeLookCamera` / `aimingCamera`，`CinemachineImpulseSource` 震屏入口 `ShakeCamera()`）。当前为 CM 3.x：命名空间 `Unity.Cinemachine`；`CinemachineFreeLook` 属 CM3 的 Deprecated 保留类，可用但报 CS0618，**新代码不要再新增**，需要新相机用 `CinemachineCamera` + `OrbitalFollow` / `RotationComposer`。
-- **准星**：`CrosshairSettings`（ScriptableObject，菜单 `ElementWar/Crosshair Settings`，Cross/Dot/Circle/Chevron 四种样式）+ `CrosshairUI.Instance.Show()/Hide()`；子物体由 `EnsureChildObjects()` 程序化创建。
+- **准星**：`CrosshairSettings`（ScriptableObject，资产在 `Assets/Settings/CrosshairSettings.asset`，菜单 `ElementWar/Crosshair Settings`，Cross/Dot/Circle/Chevron 四种样式）+ `CrosshairUI.Instance.Show()/Hide()`；子物体由 `EnsureChildObjects()` 程序化创建。
 - **武器与子弹**：`PlayerWeapon`（开火/后坐/射线）、`PlayerWeaponBullet`（弹道，`Destroy(gameObject, lifeTime)`，**尚未池化**）。
 - **动画**：`PlayerModel.OnAnimatorMove` 驱动位移；`PlayerStateAnimation()` 播动画；Animation Rigging（`TwoBoneIKConstraint`、`MultiAimConstraint`）做手部/身体瞄准约束。
 
@@ -117,4 +117,5 @@ dotnet build Assembly-CSharp.csproj
 
 - 2026-09-27：初版 AGENTS.md，依据工程实测（版本/管线/包/目录/脚本分层/场景分布）生成。
 - 2026-09-28：Input System 1.7.0→1.14.0、Cinemachine 2.10.4→3.1.7。起因：CM 3.1.7 依赖 Input System 1.8+ 的 `InputAction.activeValueType`。注意 Unity 2023.2 上 Input System 只能用 ≤1.14.0（1.14.1 起用了本版本不存在的 `BuildTarget.VisionOS`）。CM3 命名空间为 `Unity.Cinemachine`，`PlayerController` 已同步 `using`。
+- 2026-10-06：**布局调整**——清空并删除 `Assets/Resources/`（182.8 MB 常驻，取证 `Resources.Load` 为 0），`Plugins/EffectCore`、`Plugins/YSA Toon` 与 Resources 全部内容归口到新建 `Assets/ThirdParty/`（208.4 MB），`CrosshairSettings.asset` 移入 `Assets/Settings/`；`Plugins/` 只留 `Roslyn`。迁移经 Unity MCP `execute_code` + `AssetDatabase.MoveAsset` 执行（GUID 保留），`TestScene` 对 Resources 的引用已归零。
 - 2026-10-06：**改版为分册治理结构**（参考 `Neoforge2_chenxirfm`）。本文件瘦身为唯一入口，正文拆入 `docs/specs/` 十二册；新增 `CLAUDE.md` 薄入口与 `docs/README.md`；落地三宿主工程级 MCP 清单（`.mcp.json`、`.dsh/.../mcp.json`、`~/.codex/elementwar.config.toml`）；建立 codegraph 与 CBM 索引；`.gitignore` 增加 `.codegraph/` 与 `.ekko-tmp/` 并写明必须入库项。

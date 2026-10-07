@@ -33,13 +33,13 @@ Unity 2023.2.20f1 + URP 16.0.6 的第一人称射击项目「元素战争」。�
 
 1. **禁止臆造**：不确定 API 先查 `Library/PackageCache/` 实际安装的包源码，查不到就抛问题等确认。
 2. **先分析 → 再确认 → 再实施**：未经确认不批量修改、不整体重构、不扩展范围。
-3. **第三方只读**：`Assets/Low Poly FPS Pack/`、`Assets/MMD4Mecanim/`、`Assets/Plugins/` 不改其源码与资源。
+3. **第三方只读**：`Assets/Low Poly FPS Pack/`、`Assets/MMD4Mecanim/`、`Assets/ThirdParty/`、`Assets/Plugins/Roslyn/` 不改其源码与资源。
 4. **生成文件不手改**：`MyInputSystem.cs` 由 `.inputactions` 生成。
 5. **不手写序列化 YAML**：`.unity`／`.prefab`／`.asset`／`ProjectSettings` 经 Editor 或 Unity MCP 改。
 6. **`.meta` 同增同删**，不手工改既有 GUID。
 7. **不引入第二套机制**：状态机 `Utils/StateMachine`、单例 `Base/SingleMonoBase<T>`、帧驱动 `Utils/MonoManager`、玩家入口 `PlayerController.INSTANCE`。
 8. **不擅自引入架构**：不新增 asmdef、不引第三方框架。
-9. **Resources 慎用**：`Assets/Resources/` 已 182.8 MB，新增默认不进。
+9. **`Resources` 已移除**：`Assets/Resources/` 已清空删除（原 182.8 MB 常驻），不重建；新增资源走 Inspector 引用或 `ScriptableObject` 持有。
 10. **性能结论要举证**：热点改动必须有 Profiler 依据。
 11. **最小改动**：优先局部修改与复用。
 12. **未授权不散写文档**：治理文档只写 `docs/`。
