@@ -76,3 +76,13 @@ Assets/MMD4Mecanim/
 Assets/Low Poly FPS Pack/
 /Assets/MMD4Mecanim.meta
 /Assets/Low Poly FPS Pack.meta
+
+# --- AI 协作工具本地产物 ---
+# .codegraph/：codegraph 代码图谱索引（本机重建，不进仓库）
+.codegraph/
+# .ekko-tmp/：Agent 运行时的一次性中间产物与工具输出
+.ekko-tmp/
+# 注意：以下两项是工程级 AI 协作配置，**应当入库**，不要加进忽略列表：
+#   .mcp.json                              根级项目 MCP 清单（Claude Code 等）
+#   .dsh/@wingsky-1/dsh-mcp-manager/mcp.json  dsh 项目级 MCP 清单
+#   AGENTS.md / CLAUDE.md / docs/          治理规范入口与正文

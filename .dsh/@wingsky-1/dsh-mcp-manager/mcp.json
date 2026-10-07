@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "servers": [
+    {
+      "name": "unity",
+      "transport": "streamable-http",
+      "enabled": true,
+      "url": "http://127.0.0.1:8080/mcp",
+      "toolCallTimeoutMs": 60000,
+      "description": "Unity MCP (MCP for Unity 10.2.0) — 元素战争工程实机操作桥。需 Unity 打开本工程并在 Window → MCP for Unity 启动服务（建议开 Auto-Start on Editor Load）。端点 = Editor 的 HTTP Base URL + /mcp，默认 http://127.0.0.1:8080/mcp；若在 Advanced 改过基址，这里要同步改。Unity 关闭时本连接不可用，不影响其他 server。"
+    },
+    {
+      "name": "codegraph",
+      "transport": "stdio",
+      "command": "C:/Users/NFA/AppData/Local/codegraph/current/node.exe",
+      "args": [
+        "--liftoff-only",
+        "--disable-warning=ExperimentalWarning",
+        "C:/Users/NFA/AppData/Local/codegraph/current/lib/dist/bin/codegraph.js",
+        "serve",
+        "--mcp"
+      ],
+      "env": {},
+      "enabled": true,
+      "description": "代码图谱：符号检索、调用链与架构查询。用 codegraph 自带 node.exe 直启（Windows 上 codegraph 只有 .cmd 外壳，无 shell 的 stdio 启动会 ENOENT）。索引在工程内 .codegraph/，重建用 codegraph index。"
+    },
+    {
+      "name": "codebase-memory-mcp",
+      "transport": "stdio",
+      "command": "C:/Users/NFA/.local/bin/codebase-memory-mcp.exe",
+      "args": [],
+      "env": {},
+      "enabled": true,
+      "description": "CBM 代码库记忆：search_graph / query_graph / trace_path / get_architecture。首次用前先调用 index_repository 建索引。"
+    }
+  ]
+}

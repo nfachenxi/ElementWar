@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "unity": {
+      "type": "http",
+      "url": "http://127.0.0.1:8080/mcp",
+      "description": "Unity MCP (MCP for Unity 10.2.0) — 需 Unity 打开本工程并启动 MCP 服务；端点 = HTTP Base URL + /mcp，默认 8080。Unity 关闭时本 server 连接失败，不影响其他 server"
+    },
+    "codegraph": {
+      "type": "stdio",
+      "command": "C:/Users/NFA/AppData/Local/codegraph/current/node.exe",
+      "args": [
+        "--liftoff-only",
+        "--disable-warning=ExperimentalWarning",
+        "C:/Users/NFA/AppData/Local/codegraph/current/lib/dist/bin/codegraph.js",
+        "serve",
+        "--mcp"
+      ],
+      "description": "代码图谱：符号检索、调用链与架构查询。索引在工程内 .codegraph/，重建用 codegraph index"
+    },
+    "codebase-memory-mcp": {
+      "type": "stdio",
+      "command": "C:/Users/NFA/.local/bin/codebase-memory-mcp.exe",
+      "args": [],
+      "description": "CBM 代码库记忆：search_graph / query_graph / trace_path / get_architecture。首次用前先 index_repository"
+    }
+  }
+}
