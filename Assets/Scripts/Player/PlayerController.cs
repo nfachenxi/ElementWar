@@ -1,5 +1,5 @@
 using Base;
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Serialization;
